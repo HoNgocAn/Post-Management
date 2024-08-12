@@ -1,0 +1,7 @@
+.add-icon {
+    position: fixed !important;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+    display: flex;
+}
