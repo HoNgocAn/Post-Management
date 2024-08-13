@@ -31,10 +31,21 @@ function* updatePostSaga(action) {
     }
 }
 
+function* deletePostSaga(action) {
+    try {
+        const { id } = action.payload;
+        yield call(api.deletePost, id);
+        yield put(actions.deletePost.deletePostSuccess(id));
+    } catch (error) {
+        yield put(actions.deletePost.deletePostFailure(error));
+    }
+}
+
 function* mySaga() {
     yield takeLatest(actions.getPosts.getPostsRequest, fetchPostSaga);
     yield takeLatest(actions.createPost.createPostRequest, createPostSaga);
     yield takeLatest(actions.updatePost.updatePostRequest, updatePostSaga);
+    yield takeLatest(actions.deletePost.deletePostRequest, deletePostSaga);
 }
 
 export default mySaga;

@@ -21,3 +21,11 @@ export const updatePost = createActions({
     updatePostSuccess: (payLoad) => payLoad,
     updatePostFailure: (err) => err
 })
+
+export const deletePost = createActions({
+    deletePostRequest: (id) => ({ id }),
+    deletePostSuccess: (id) => ({ id }),
+    deletePostFailure: (error) => ({ error })
+});
+
+

@@ -1,28 +1,52 @@
-import React from 'react';
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Card, CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, CardActions, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import moment from 'moment';
-import { useDispatch } from "react-redux";
-import * as actions from "../../redux/actions";
+import * as actions from "../../redux/actions"
 
 function Posts({ post }) {
-
     const dispatch = useDispatch();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDelete = () => {
+        dispatch(actions.deletePost.deletePostRequest(post._id));
+        handleClose();
+    };
 
     const clickLike = () => {
-        dispatch(actions.updatePost.updatePostRequest({ ...post, likeCount: post.likeCount + 1 })); // Gửi dữ liệu đi
+        dispatch(actions.updatePost.updatePostRequest({ ...post, likeCount: post.likeCount + 1 }));
     };
 
     return (
         <Card>
-            <CardHeader avatar={<Avatar>A</Avatar>}
+            <CardHeader
+                avatar={<Avatar>A</Avatar>}
                 title={post.author}
                 subheader={moment(post.updatedAt).format('DD/MM/YYYY')}
                 action={
-                    <IconButton>
-                        <MoreVertIcon />
-                    </IconButton>
+                    <>
+                        <IconButton onClick={handleClick}>
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={() => handleDelete()}>Delete</MenuItem>
+                        </Menu>
+                    </>
                 }
             />
             <CardMedia
